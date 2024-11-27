@@ -4,6 +4,9 @@ import time
 
 version="1.0.0"
 branch="dev"
+var1=""
+var2=""
+var3=""
 print("TailsCode v" + version + "-" + branch)
 running=True
 f=False
@@ -25,12 +28,15 @@ reloadpointers()
 print("TailsCode v" + version + "-" + branch)
 def handlecommand(cmd):
     try:
+        global var1
+        global var2
+        global var3
         global running
         global f
         command=cmd.split(" ")
-        if command[0]=="exit":
+        if command[0].lower()=="exit":
             running=False
-        elif command[0]=="load":
+        elif command[0].lower()=="load":
             try:
                 if command[1]:
                     print("Loading file " + command[1] + "...")
@@ -46,7 +52,7 @@ def handlecommand(cmd):
             except Exception as ex:
                 print("ERROR loading file")
                 print(ex)
-        elif command[0]=="save":
+        elif command[0].lower()=="save":
             try:
                 if command[1]:
                     print("Saving to file " + command[1] + "...")
@@ -63,7 +69,7 @@ def handlecommand(cmd):
             except Exception as ex:
                 print("ERROR saving file!")
                 print(ex)
-        elif command[0]=="run":
+        elif command[0].lower()=="run":
             try:
                 for item in commandlist:
                     if item != False:
@@ -71,6 +77,37 @@ def handlecommand(cmd):
             except Exception as ex:
                 print("ERROR RUNning commands!")
                 print(ex)
+        elif command[0].lower()=="new":
+            try:
+                reloadpointers()
+            except:
+                print("ERROR creating NEW program (how? make a bug report if you see this!)")
+                print("I will try again when you press enter")
+                input()
+                reloadpointers()
+        elif command[0].lower()=="del":
+            try:
+                # print(commandlist[command[1]])
+                commandlist[int(command[1])]=False
+            except Exception as ex:
+                print("Could not DELete line!")
+                print(ex)
+        elif command[0].lower()=="list":
+            try:
+                for item in commandlist:
+                    if item!=False:
+                        print(item)
+                        print("\n")
+            except:
+                print("Could not LIST commands!")
+        #
+        #
+        #
+        #
+        #    commands that need line numbers!!!
+        #
+        #
+        #
         elif command[1]=="print":
             # print("print command called")
             try:
@@ -89,20 +126,53 @@ def handlecommand(cmd):
                                     if pointer!=2:
                                         if item!="`":
                                             # print("new item: " + str(item))
-                                            string = string + item
+                                            if pointer != 3:
+                                                string = string +  " " + item
+                                            else:
+                                                string = string + item
                             if pointer!=2:
                                 if item == "`":
                                     break
                             pointer=pointer+1
-                        print(string)
+                        try:
+                            if command[pointer+1]:
+                                if command[pointer+1]=="1":
+                                    print(string + var1)
+                                elif command[pointer+1]=="2":
+                                    print(string + var2)
+                                elif command[pointer+1]=="3":
+                                    print(string + var3)
+                                else:
+                                    print("Syntax error: not a usable variable or none selected")
+                        except Exception as ex:
+                            print(string)
                     except Exception as ex:
                         print("Syntax error: Never ending string")
                         print(ex)
                 else:
                     print("No '`' detected! did you put a space?")
+            # except Exception as ex:
+                # print("Command error!")
+                # print(ex)
             except Exception as ex:
                 print("Syntax error at value 2: String Expected")
                 print(ex)
+        elif command[1]=="input":
+            try:
+                pointer=0
+                commandlist[int(command[0])]=cmd
+                if command[2]=="1":
+                    var1=input("?")
+                elif command[2]=="2":
+                    var2=input("?")
+                elif command[2]=="3":
+                    var3=input("?")
+                else:
+                    raise Exception
+            except Exception as ex:
+                print("input command error!")
+                print(ex)
+
     except Exception as ex:
         print("Command Error")
         print(ex)
