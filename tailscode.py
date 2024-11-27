@@ -36,6 +36,10 @@ def handlecommand(cmd):
         command=cmd.split(" ")
         if command[0].lower()=="exit":
             running=False
+        elif command[0].lower()=="help":
+            print("1: print ` <text goes here> `")
+            print("1.1: print ` <text goes here> ` <var number>")
+            print("2. input <var number (1-3)>")
         elif command[0].lower()=="load":
             try:
                 if command[1]:
@@ -108,10 +112,6 @@ def handlecommand(cmd):
         #
         #
         #
-        elif command[1]=="help":
-            print("1: print ` <text goes here> `")
-            print("1.1: print ` <text goes here> ` <var number>")
-            print("2. input <var number (1-3)>")
         elif command[1]=="print":
             # print("print command called")
             try:
